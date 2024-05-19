@@ -1,0 +1,35 @@
+name: Restore and Push Specific Commit
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit_sha:
+        required: true
+        type: string
+
+jobs:
+  restore-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 
+
+      - name: Reset to Specific Commit
+        run: |
+          git reset --hard ${{ inputs.commit_sha }}
+
+      - name: Push Changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git push --force
+
+      - name: Reset Project
+        env:
+          PIIANO_CLIENT_ID: ${{secrets.client_id}}
+          PIIANO_CLIENT_SECRET: ${{secrets.client_secret}}
+        run: |
+          ./reset.sh wN3GusCKpUma

@@ -1,0 +1,46 @@
+name: Piiano Flows Workflow
+on:
+  push:
+    branches:
+      - "main"
+  workflow_dispatch:
+    inputs:
+      sub_dir:
+        required: false
+        type: string
+        default: ""
+      project_name:
+        required: false
+        type: string
+        default: ""
+jobs:
+  run_scan_with_action:
+    uses: piiano/flows/.github/workflows/scan.yml@readme_fix
+    with:
+      customer_identifier: 'piiano-demo'
+      customer_env: 'ci_demo'
+      sub_dir: ${{inputs.sub_dir || 'java/bank/source'}} 
+      project_name: ${{inputs.project_name || 'Demo'}}
+      ref: ${{ github.ref }}
+    secrets:
+      client_id: ${{secrets.FLOWS_CLIENT_ID}}
+      client_secret: ${{secrets.FLOWS_CLIENT_SECRET}}
+      repo: ${{ github.repository }}
+
+  # run_scan_with_action:
+  #     runs-on: "ubuntu-latest"
+  #     steps:
+  #       - name: Checkout Repo to Scan
+  #         run: |
+  #           git clone ${{ github.repository }}
+  #       - name: Run Scan
+  #         id: scan
+  #         uses: piiano/flows/ci/action
+  #         with:
+  #           customer_identifier: piiano-demo
+  #           customer_env: ci_demo
+  #           client_id: ${{secrets.FLOWS_CLIENT_ID}}
+  #           client_secret: ${{secrets.FLOWS_CLIENT_SECRET}}
+  #           repo: ${{ github.repository }}
+  #           sub_dir: ${{inputs.project_name || 'java/bank/source'}} 
+  #           project_name: ${{inputs.project_name || 'DemoProject'}}

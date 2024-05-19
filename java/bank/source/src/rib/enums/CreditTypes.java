@@ -1,5 +1,6 @@
 package rib.enums;
 
+
 public enum CreditTypes {
 	CL("Consumer loans"), MI("Mortgage loan");
 	public final String code;
