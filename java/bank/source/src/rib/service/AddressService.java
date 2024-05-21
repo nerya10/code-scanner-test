@@ -118,6 +118,7 @@ public class AddressService {
 		addressDao.persist(address);
 		addressDao.closeCurrentSessionwithTransaction();
 		logger.info("saved address" + address.toString());
+		logger.error("Phone is " + address.getClient().getPhoneNumber());
 	}
 
 	public List<Address> showAllAddresses() {
